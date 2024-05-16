@@ -18,3 +18,11 @@ type Product struct {
 type Inserter interface {
 	Insert(ctx context.Context, prd *Product) error
 }
+
+type Finder interface {
+	Find(ctx context.Context, id uuid.UUID) (*Product, error)
+}
+
+type Saver interface {
+	Save(ctx context.Context, prd *Product) error
+}

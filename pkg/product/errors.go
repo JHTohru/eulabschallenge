@@ -1,5 +1,7 @@
 package product
 
+import "fmt"
+
 type ValidationError struct {
 	msg string
 }
@@ -16,4 +18,5 @@ var (
 	ErrNilInput           = NewValidationError("product input is nil")
 	ErrInvalidName        = NewValidationError("product name is invalid")
 	ErrInvalidDescription = NewValidationError("product description is invalid")
+	ErrNotFound           = fmt.Errorf("product not found")
 )
