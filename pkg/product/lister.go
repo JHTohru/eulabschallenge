@@ -1,6 +1,9 @@
 package product
 
-import "context"
+import (
+	"context"
+	"math"
+)
 
 type Lister struct {
 	counter Counter
@@ -35,6 +38,7 @@ func (l *Lister) List(ctx context.Context, pageSize, pageNumber int) ([]*Product
 	if err != nil {
 		return nil, 0, err
 	}
+	totalPages := int(math.Ceil(float64(total) / float64(pageSize)))
 
-	return prds, total, nil
+	return prds, totalPages, nil
 }
