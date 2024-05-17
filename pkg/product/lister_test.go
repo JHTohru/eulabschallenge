@@ -3,42 +3,13 @@ package product
 import (
 	"context"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 )
 
-type counterStub struct {
-	total int
-	err   error
-}
-
-func (c *counterStub) Count(_ context.Context) (int, error) {
-	return c.total, c.err
-}
-
-type fetcherStub struct {
-	prds []*Product
-	err  error
-}
-
-func (f *fetcherStub) Fetch(_ context.Context, _, _ int) ([]*Product, error) {
-	return f.prds, f.err
-}
-
-func mustParseTime(value string) time.Time {
-	t, err := time.Parse("2006-01-02 15:04:05", value)
-	if err != nil {
-		panic(err)
-	}
-	return t
-}
-
 func TestLister_List(t *testing.T) {
-	fakeErr := fmt.Errorf("fake error")
 	prds := []*Product{
 		{
 			ID:          uuid.New(),
@@ -99,12 +70,12 @@ func TestLister_List(t *testing.T) {
 			pageSize:   3,
 			pageNumber: 1,
 			countTotal: 0,
-			countErr:   fakeErr,
+			countErr:   errFake,
 			fetchPrds:  nil,
 			fetchErr:   nil,
 			prdsWant:   nil,
 			totalWant:  0,
-			errWant:    fakeErr,
+			errWant:    errFake,
 		},
 		"it must err for a failing fetch": {
 			pageSize:   3,
@@ -112,10 +83,10 @@ func TestLister_List(t *testing.T) {
 			countTotal: 100,
 			countErr:   nil,
 			fetchPrds:  nil,
-			fetchErr:   fakeErr,
+			fetchErr:   errFake,
 			prdsWant:   nil,
 			totalWant:  0,
-			errWant:    fakeErr,
+			errWant:    errFake,
 		},
 		"happy path": {
 			pageSize:   3,
@@ -125,7 +96,7 @@ func TestLister_List(t *testing.T) {
 			fetchPrds:  prds,
 			fetchErr:   nil,
 			prdsWant:   prds,
-			totalWant:  100,
+			totalWant:  34,
 			errWant:    nil,
 		},
 	}

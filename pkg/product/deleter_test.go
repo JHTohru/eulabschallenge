@@ -3,24 +3,14 @@ package product
 import (
 	"context"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
 
 	"github.com/google/uuid"
 )
 
-type removerStub struct {
-	err error
-}
-
-func (r *removerStub) Remove(ctx context.Context, id uuid.UUID) error {
-	return r.err
-}
-
 func TestDeleter_Delete(t *testing.T) {
 	id := uuid.New()
-	fakeErr := fmt.Errorf("fake error")
 	prd := &Product{
 		ID:          id,
 		Name:        "lorem ipsum",
@@ -39,10 +29,10 @@ func TestDeleter_Delete(t *testing.T) {
 		"it must err for a failing find": {
 			id:        id,
 			findPrd:   nil,
-			findErr:   fakeErr,
+			findErr:   errFake,
 			removeErr: nil,
 			prdWant:   nil,
-			errWant:   fakeErr,
+			errWant:   errFake,
 		},
 		"it must err for a missing product": {
 			id:        id,
@@ -56,9 +46,9 @@ func TestDeleter_Delete(t *testing.T) {
 			id:        id,
 			findPrd:   prd,
 			findErr:   nil,
-			removeErr: fakeErr,
+			removeErr: errFake,
 			prdWant:   nil,
-			errWant:   fakeErr,
+			errWant:   errFake,
 		},
 		"happy path": {
 			id:        id,

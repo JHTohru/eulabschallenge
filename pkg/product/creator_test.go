@@ -3,7 +3,6 @@ package product
 import (
 	"context"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -11,18 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-type inserterStub struct {
-	err error
-}
-
-func (i *inserterStub) Insert(_ context.Context, _ *Product) error {
-	return i.err
-}
-
 func TestCreator_Create(t *testing.T) {
 	now := time.Now()
 	id := uuid.New()
-	fakeErr := fmt.Errorf("fake error")
 	tests := map[string]struct {
 		in          *Input
 		now         time.Time
@@ -46,9 +36,9 @@ func TestCreator_Create(t *testing.T) {
 			},
 			now:         time.Time{},
 			id:          uuid.UUID{},
-			inserterErr: fakeErr,
+			inserterErr: errFake,
 			prdWant:     nil,
-			errWant:     fakeErr,
+			errWant:     errFake,
 		},
 		"happy path": {
 			in: &Input{

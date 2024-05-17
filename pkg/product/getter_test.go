@@ -3,24 +3,20 @@ package product
 import (
 	"context"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 )
 
 func TestGetter_Get(t *testing.T) {
 	id := uuid.New()
-	fakeErr := fmt.Errorf("fake error")
-	now := time.Now()
 	prd := &Product{
 		ID:          id,
 		Name:        "lorem ipsum",
 		Description: "dolor sit amet",
-		CreatedAt:   now,
-		UpdatedAt:   now,
+		CreatedAt:   mustParseTime("2024-03-12 12:44:22"),
+		UpdatedAt:   mustParseTime("2024-03-12 12:44:22"),
 	}
 	tests := map[string]struct {
 		id      uuid.UUID
@@ -32,9 +28,9 @@ func TestGetter_Get(t *testing.T) {
 		"it must err for a failing find": {
 			id:      id,
 			findPrd: nil,
-			findErr: fakeErr,
+			findErr: errFake,
 			prdWant: nil,
-			errWant: fakeErr,
+			errWant: errFake,
 		},
 		"it must err for a missing product": {
 			id:      id,

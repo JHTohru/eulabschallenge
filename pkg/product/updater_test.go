@@ -3,7 +3,6 @@ package product
 import (
 	"context"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -11,27 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-type finderStub struct {
-	prd *Product
-	err error
-}
-
-func (f *finderStub) Find(_ context.Context, _ uuid.UUID) (*Product, error) {
-	return f.prd, f.err
-}
-
-type saverStub struct {
-	err error
-}
-
-func (s *saverStub) Save(_ context.Context, _ *Product) error {
-	return s.err
-}
-
 func TestUpdater_Update(t *testing.T) {
 	now := time.Now()
 	id := uuid.New()
-	fakeErr := fmt.Errorf("fake error")
 	tests := map[string]struct {
 		id      uuid.UUID
 		in      *Input
@@ -45,7 +26,7 @@ func TestUpdater_Update(t *testing.T) {
 		"it must err for an invalid input": {
 			id:      id,
 			in:      nil,
-			now:     time.Time{},
+			now:     now,
 			findPrd: nil,
 			findErr: nil,
 			saveErr: nil,
@@ -58,12 +39,12 @@ func TestUpdater_Update(t *testing.T) {
 				Name:        "consectetur",
 				Description: "adipiscing elit",
 			},
-			now:     time.Time{},
+			now:     now,
 			findPrd: nil,
-			findErr: fakeErr,
+			findErr: errFake,
 			saveErr: nil,
 			prdWant: nil,
-			errWant: fakeErr,
+			errWant: errFake,
 		},
 		"it must err for a missing product": {
 			id: id,
@@ -71,7 +52,7 @@ func TestUpdater_Update(t *testing.T) {
 				Name:        "consectetur",
 				Description: "adipiscing elit",
 			},
-			now:     time.Time{},
+			now:     now,
 			findPrd: nil,
 			findErr: nil,
 			saveErr: nil,
@@ -84,18 +65,18 @@ func TestUpdater_Update(t *testing.T) {
 				Name:        "consectetur",
 				Description: "adipiscing elit",
 			},
-			now: time.Time{},
+			now: now,
 			findPrd: &Product{
 				ID:          id,
 				Name:        "lorem ipsum",
 				Description: "dolor sit amet",
-				CreatedAt:   time.Time{},
-				UpdatedAt:   time.Time{},
+				CreatedAt:   mustParseTime("2024-03-12 12:44:22"),
+				UpdatedAt:   mustParseTime("2024-03-12 12:44:22"),
 			},
 			findErr: nil,
-			saveErr: fakeErr,
+			saveErr: errFake,
 			prdWant: nil,
-			errWant: fakeErr,
+			errWant: errFake,
 		},
 		"happy path": {
 			id: id,
@@ -108,8 +89,8 @@ func TestUpdater_Update(t *testing.T) {
 				ID:          id,
 				Name:        "lorem ipsum",
 				Description: "dolor sit amet",
-				CreatedAt:   time.Time{},
-				UpdatedAt:   time.Time{},
+				CreatedAt:   mustParseTime("2024-03-12 12:44:22"),
+				UpdatedAt:   mustParseTime("2024-03-12 12:44:22"),
 			},
 			findErr: nil,
 			saveErr: nil,
@@ -117,7 +98,7 @@ func TestUpdater_Update(t *testing.T) {
 				ID:          id,
 				Name:        "consectetur",
 				Description: "adipiscing elit",
-				CreatedAt:   time.Time{},
+				CreatedAt:   mustParseTime("2024-03-12 12:44:22"),
 				UpdatedAt:   now,
 			},
 			errWant: nil,
