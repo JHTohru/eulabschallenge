@@ -34,3 +34,7 @@ type Counter interface {
 type Saver interface {
 	Save(ctx context.Context, prd *Product) error
 }
+
+type Remover interface {
+	Remove(ctx context.Context, id uuid.UUID) error
+}
