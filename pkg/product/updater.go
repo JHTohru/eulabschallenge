@@ -34,6 +34,10 @@ func (u *Updater) Update(ctx context.Context, id uuid.UUID, in *Input) (*Product
 		return nil, ErrNotFound
 	}
 
+	if in.Name == prd.Name && in.Description == prd.Description {
+		return prd, nil
+	}
+
 	prd.Name = in.Name
 	prd.Description = in.Description
 	prd.UpdatedAt = u.currentTime()
