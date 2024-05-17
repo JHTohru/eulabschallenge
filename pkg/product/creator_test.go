@@ -84,7 +84,7 @@ func TestCreator_Create(t *testing.T) {
 				t.Errorf("unexpected product; got %v, want %v", prd, test.prdWant)
 			}
 			if !errors.Is(err, test.errWant) {
-				t.Errorf("unexpected erro; got %v, want %v", err, test.errWant)
+				t.Errorf("unexpected error; got %v, want %v", err, test.errWant)
 			}
 		})
 	}
