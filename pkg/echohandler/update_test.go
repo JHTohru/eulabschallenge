@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -27,7 +26,6 @@ func (u *updaterStub) Update(_ context.Context, _ uuid.UUID, _ *product.Input) (
 }
 
 func TestUpdateHandler(t *testing.T) {
-	errFake := fmt.Errorf("fake error")
 	id := uuid.New()
 	now := time.Now()
 	prd := &product.Product{

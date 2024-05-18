@@ -4,12 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
@@ -27,14 +25,12 @@ func (c *creatorStub) Create(_ context.Context, _ *product.Input) (*product.Prod
 }
 
 func TestCreateHandler(t *testing.T) {
-	errFake := fmt.Errorf("fake error")
-	now := time.Now()
 	prd := &product.Product{
 		ID:          uuid.New(),
 		Name:        "lorem ipsum",
 		Description: "dolor sit amet",
-		CreatedAt:   now,
-		UpdatedAt:   now,
+		CreatedAt:   mustParseTime("2024-03-12 12:44:22"),
+		UpdatedAt:   mustParseTime("2024-03-12 12:44:22"),
 	}
 	prdMarsh, err := json.Marshal(prd)
 	if err != nil {

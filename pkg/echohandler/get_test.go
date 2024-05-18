@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -27,7 +26,6 @@ func (g *getterStub) Get(_ context.Context, _ uuid.UUID) (*product.Product, erro
 }
 
 func TestGetHandler(t *testing.T) {
-	errFake := fmt.Errorf("fake error")
 	id := uuid.New()
 	now := time.Now()
 	prd := &product.Product{

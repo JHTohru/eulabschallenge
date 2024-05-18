@@ -9,6 +9,14 @@ import (
 	"github.com/google/uuid"
 )
 
+type removerStub struct {
+	err error
+}
+
+func (r *removerStub) Remove(_ context.Context, _ uuid.UUID) error {
+	return r.err
+}
+
 func TestDeleter_Delete(t *testing.T) {
 	id := uuid.New()
 	prd := &Product{

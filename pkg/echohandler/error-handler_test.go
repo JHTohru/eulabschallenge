@@ -1,7 +1,6 @@
 package echohandler
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -34,7 +33,7 @@ func TestHttpErrorHandler(t *testing.T) {
 			bodyWant:   "product not found",
 		},
 		"it must respond with the internal server error status for an unexpected errors": {
-			err:        fmt.Errorf("fake error"),
+			err:        errFake,
 			statusWant: http.StatusInternalServerError,
 			bodyWant:   "internal error",
 		},

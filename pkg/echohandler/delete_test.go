@@ -4,16 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/JHTohru/eulabschallenge/pkg/product"
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
+
+	"github.com/JHTohru/eulabschallenge/pkg/product"
 )
 
 type deleterStub struct {
@@ -26,7 +26,6 @@ func (d *deleterStub) Delete(_ context.Context, _ uuid.UUID) (*product.Product, 
 }
 
 func TestDeleteHandler(t *testing.T) {
-	errFake := fmt.Errorf("fake error")
 	id := uuid.New()
 	now := time.Now()
 	prd := &product.Product{

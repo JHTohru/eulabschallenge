@@ -10,44 +10,52 @@ import (
 	"github.com/google/uuid"
 )
 
+type inserterStub struct {
+	err error
+}
+
+func (i *inserterStub) Insert(_ context.Context, _ *Product) error {
+	return i.err
+}
+
 func TestCreator_Create(t *testing.T) {
 	now := time.Now()
 	id := uuid.New()
 	tests := map[string]struct {
-		in          *Input
-		now         time.Time
-		id          uuid.UUID
-		inserterErr error
-		prdWant     *Product
-		errWant     error
+		in        *Input
+		now       time.Time
+		id        uuid.UUID
+		insertErr error
+		prdWant   *Product
+		errWant   error
 	}{
 		"it must err for an invalid input": {
-			in:          nil,
-			now:         time.Time{},
-			id:          uuid.UUID{},
-			inserterErr: nil,
-			prdWant:     nil,
-			errWant:     ErrNilInput,
+			in:        nil,
+			now:       time.Time{},
+			id:        uuid.UUID{},
+			insertErr: nil,
+			prdWant:   nil,
+			errWant:   ErrNilInput,
 		},
 		"it must err for a failing insert": {
 			in: &Input{
 				Name:        "lorem ipsum",
 				Description: "dolor sit amet",
 			},
-			now:         time.Time{},
-			id:          uuid.UUID{},
-			inserterErr: errFake,
-			prdWant:     nil,
-			errWant:     errFake,
+			now:       time.Time{},
+			id:        uuid.UUID{},
+			insertErr: errFake,
+			prdWant:   nil,
+			errWant:   errFake,
 		},
 		"happy path": {
 			in: &Input{
 				Name:        "lorem ipsum",
 				Description: "dolor sit amet",
 			},
-			now:         now,
-			id:          id,
-			inserterErr: nil,
+			now:       now,
+			id:        id,
+			insertErr: nil,
 			prdWant: &Product{
 				ID:          id,
 				Name:        "lorem ipsum",
@@ -61,7 +69,7 @@ func TestCreator_Create(t *testing.T) {
 
 	for testName, test := range tests {
 		t.Run(testName, func(t *testing.T) {
-			i := &inserterStub{test.inserterErr}
+			i := &inserterStub{test.insertErr}
 			c := &Creator{
 				inserter:    i,
 				currentTime: func() time.Time { return test.now },

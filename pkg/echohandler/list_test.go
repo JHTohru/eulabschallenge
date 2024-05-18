@@ -9,7 +9,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
@@ -27,16 +26,7 @@ func (f *listerStub) List(_ context.Context, _, _ int) ([]*product.Product, int,
 	return f.prds, f.total, f.err
 }
 
-func mustParseTime(value string) time.Time {
-	t, err := time.Parse("2006-01-02 15:04:05", value)
-	if err != nil {
-		panic(err)
-	}
-	return t
-}
-
 func TestListHandler(t *testing.T) {
-	errFake := fmt.Errorf("fake error")
 	prds := []*product.Product{
 		{
 			ID:          uuid.New(),

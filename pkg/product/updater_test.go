@@ -10,6 +10,14 @@ import (
 	"github.com/google/uuid"
 )
 
+type saverStub struct {
+	err error
+}
+
+func (s *saverStub) Save(_ context.Context, _ *Product) error {
+	return s.err
+}
+
 func TestUpdater_Update(t *testing.T) {
 	now := time.Now()
 	id := uuid.New()

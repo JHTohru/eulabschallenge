@@ -9,6 +9,24 @@ import (
 	"github.com/google/uuid"
 )
 
+type counterStub struct {
+	total int
+	err   error
+}
+
+func (c *counterStub) Count(_ context.Context) (int, error) {
+	return c.total, c.err
+}
+
+type fetcherStub struct {
+	prds []*Product
+	err  error
+}
+
+func (f *fetcherStub) Fetch(_ context.Context, _, _ int) ([]*Product, error) {
+	return f.prds, f.err
+}
+
 func TestLister_List(t *testing.T) {
 	prds := []*Product{
 		{
