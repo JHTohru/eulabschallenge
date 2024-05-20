@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/google/uuid"
 
@@ -26,6 +27,9 @@ func (pg *ProductFinder) Find(ctx context.Context, id uuid.UUID) (*product.Produ
 	err := pg.db.QueryRowContext(ctx, query, id).Scan(&prd.ID, &prd.Name,
 		&prd.Description, &prd.CreatedAt, &prd.UpdatedAt)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return prd, nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,6 +26,11 @@ func TestProductFinder(t *testing.T) {
 
 	assert.Nil(t, err)
 	assertProductsAreEqual(t, prdGot, prdWant)
+
+	prdGot, err = pf.Find(ctx, uuid.New())
+
+	assert.Nil(t, err)
+	assert.Nil(t, prdGot)
 
 	if err := db.Close(); err != nil {
 		t.Fatal(err)
