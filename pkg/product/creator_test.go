@@ -18,7 +18,7 @@ func (i *inserterStub) Insert(_ context.Context, _ *Product) error {
 	return i.err
 }
 
-func TestCreator_Create(t *testing.T) {
+func TestCreator(t *testing.T) {
 	now := time.Now()
 	id := uuid.New()
 	tests := map[string]struct {

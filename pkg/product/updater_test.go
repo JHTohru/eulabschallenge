@@ -18,7 +18,11 @@ func (s *saverStub) Save(_ context.Context, _ *Product) error {
 	return s.err
 }
 
-func TestUpdater_Update(t *testing.T) {
+func TestUpdater(t *testing.T) {
+	// To improve performance, Update() does not write into the database if
+	// there is no actual change in the product data. This case wasn't tested
+	// to keep the test code simple.
+
 	now := time.Now()
 	id := uuid.New()
 	tests := map[string]struct {

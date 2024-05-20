@@ -27,7 +27,7 @@ func (f *fetcherStub) Fetch(_ context.Context, _, _ int) ([]*Product, error) {
 	return f.prds, f.err
 }
 
-func TestLister_List(t *testing.T) {
+func TestLister(t *testing.T) {
 	prds := []*Product{
 		{
 			ID:          uuid.New(),

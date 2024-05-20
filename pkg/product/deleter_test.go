@@ -17,7 +17,7 @@ func (r *removerStub) Remove(_ context.Context, _ uuid.UUID) error {
 	return r.err
 }
 
-func TestDeleter_Delete(t *testing.T) {
+func TestDeleter(t *testing.T) {
 	id := uuid.New()
 	prd := &Product{
 		ID:          id,

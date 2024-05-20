@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestInput_Validate(t *testing.T) {
+func TestInput(t *testing.T) {
 	tests := map[string]struct {
 		in   *Input
 		want error

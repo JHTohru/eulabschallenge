@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestGetter_Get(t *testing.T) {
+func TestGetter(t *testing.T) {
 	id := uuid.New()
 	prd := &Product{
 		ID:          id,
