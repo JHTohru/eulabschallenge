@@ -1,0 +1,20 @@
+version: '3.6'
+
+services:
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eulabschallengedb
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data/
+    command:
+      - "postgres"
+      - "-c" # turn off fsync for speed
+      - "fsync=off"
+      - "-c" # log everything for debugging
+      - "log_statement=all"
