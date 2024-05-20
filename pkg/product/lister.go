@@ -17,20 +17,24 @@ func NewLister(c Counter, f Fetcher) *Lister {
 	}
 }
 
+// List lists the existing product records sorted by their creation times.
+// The existing product records are divided in sets called pages. Each page has
+// pageSize records. List returns the pageNumberth subset with at most pageSize
+// records and the total of pages with such size. List returns an
+// ErrInvalidPageSize error for a pageSize less than one. It also returns an
+// ErrInvalidPageNumber error for a pageNumber less than one. List returns any
+// database errors that happen.
 func (l *Lister) List(ctx context.Context, pageSize, pageNumber int) ([]*Product, int, error) {
-	if pageSize <= 0 {
+	if pageSize < 1 {
 		return nil, 0, ErrInvalidPageSize
 	}
-	if pageNumber <= 0 {
+	if pageNumber < 1 {
 		return nil, 0, ErrInvalidPageNumber
 	}
 
 	total, err := l.counter.Count(ctx)
 	if err != nil {
 		return nil, 0, err
-	}
-	if total == 0 {
-		return nil, 0, nil
 	}
 
 	limit, offset := pageSize, pageSize*pageNumber

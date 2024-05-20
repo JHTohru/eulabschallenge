@@ -18,6 +18,9 @@ func NewDeleter(f Finder, r Remover) *Deleter {
 	}
 }
 
+// Delete deletes a product record with the given id from the database and
+// returns it. If such record doesn't exist, Delete returns an ErrNotFound
+// error. Delete returns any database errors that happen.
 func (d *Deleter) Delete(ctx context.Context, id uuid.UUID) (*Product, error) {
 	prd, err := d.finder.Find(ctx, id)
 	if err != nil {

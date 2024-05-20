@@ -21,6 +21,9 @@ func NewCreator(i Inserter) *Creator {
 	}
 }
 
+// Create creates a new product and saves it into the database. Since input is
+// validated, Create may return the same errors as *Input.Validate returns.
+// Create returns any database failure errors that happen.
 func (c *Creator) Create(ctx context.Context, in *Input) (*Product, error) {
 	if err := in.Validate(); err != nil {
 		return nil, err

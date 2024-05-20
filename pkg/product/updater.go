@@ -21,6 +21,9 @@ func NewUpdater(f Finder, s Saver) *Updater {
 	}
 }
 
+// Update udpates the product record with the given id with the in's data.
+// If such record doesn't exist, Update returns an ErrNotFound error.
+// Update returns any database errors that happen.
 func (u *Updater) Update(ctx context.Context, id uuid.UUID, in *Input) (*Product, error) {
 	if err := in.Validate(); err != nil {
 		return nil, err
