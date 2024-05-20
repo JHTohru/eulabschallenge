@@ -9,7 +9,7 @@ import (
 	"github.com/JHTohru/eulabschallenge/pkg/product"
 )
 
-func httpErrorHandler(err error, c echo.Context) {
+func HTTPErrorHandler(err error, c echo.Context) {
 	switch {
 	case errors.As(err, new(*malformationError)):
 		c.String(http.StatusBadRequest, err.Error())

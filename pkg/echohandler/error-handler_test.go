@@ -46,7 +46,7 @@ func TestHttpErrorHandler(t *testing.T) {
 			resp := httptest.NewRecorder()
 			c := e.NewContext(req, resp)
 
-			httpErrorHandler(test.err, c)
+			HTTPErrorHandler(test.err, c)
 
 			respBody := resp.Body.String()
 			respBody = strings.TrimSuffix(respBody, "\n")
