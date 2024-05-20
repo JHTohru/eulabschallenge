@@ -4,7 +4,7 @@ This application is a pretty simple Product CRUD REST API written in Go and whic
 
 ## docker-compose
 
-The docker-compose defined in [pkg/postgres/infra/docker-compose.yaml](pkg/postgres/infra/docker-compose.yaml) is needed to run the server [(cmd/restsvr/main.go)](cmd/restsvr/main.go) and to run the integration tests from [(pkg/postgres)](pkg/postgres).
+The docker-compose defined in [pkg/postgres/infra/docker-compose.yaml](pkg/postgres/infra/docker-compose.yaml) is needed to run the server ([cmd/restsvr/main.go](cmd/restsvr/main.go)) and to run the integration tests from ([pkg/postgres](pkg/postgres)).
 
 ### Running docker-compose:
 
