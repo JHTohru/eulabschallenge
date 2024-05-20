@@ -9,7 +9,7 @@ The docker-compose defined in [pkg/postgres/infra/docker-compose.yaml](pkg/postg
 ### Running docker-compose:
 
 ```console
-$ cd pkg/postgres/infra && docker-compose up
+cd pkg/postgres/infra && docker-compose up
 ```
 
 The host system must be a Linux system because the docker-compose uses [tmpfs mount](https://docs.docker.com/storage/tmpfs/).
@@ -17,13 +17,13 @@ The host system must be a Linux system because the docker-compose uses [tmpfs mo
 Once the Postgres database is running, run the migration files to structure the database.
 
 ```console
-$ go run cmd/migrate/main.go --dir ./pkg/postgres/infra/migrations up
+go run cmd/migrate/main.go --dir ./pkg/postgres/infra/migrations up
 ```
 
 ## Starting the server
 
 ```console
-$ go run cmd/restsvr/main.go
+go run cmd/restsvr/main.go
 ```
 
 ## Postman
