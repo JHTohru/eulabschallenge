@@ -105,6 +105,16 @@ func TestListHandler(t *testing.T) {
 			bodyWant:       fmt.Sprintf("{\"products\":%s,\"pages_total\":%d}", prdsMarsh, 34),
 			errWant:        nil,
 		},
+		"it must respond with an empty list instead of null": {
+			pageSize:       "3",
+			pageNumber:     "1",
+			listPrds:       nil,
+			listTotalPages: 0,
+			listErr:        nil,
+			statusWant:     http.StatusOK,
+			bodyWant:       `{"products":[],"pages_total":0}`,
+			errWant:        nil,
+		},
 	}
 
 	for testName, test := range tests {

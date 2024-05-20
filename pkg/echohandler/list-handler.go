@@ -45,6 +45,9 @@ func (lh *ListHandler) Handle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	if prds == nil {
+		prds = make([]*product.Product, 0)
+	}
 
 	page := productsPage{prds, pagesTotal}
 	return c.JSON(http.StatusOK, page)
