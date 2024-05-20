@@ -37,7 +37,7 @@ func (l *Lister) List(ctx context.Context, pageSize, pageNumber int) ([]*Product
 		return nil, 0, err
 	}
 
-	limit, offset := pageSize, pageSize*pageNumber
+	limit, offset := pageSize, (pageNumber-1)*pageSize
 	prds, err := l.fetcher.Fetch(ctx, limit, offset)
 	if err != nil {
 		return nil, 0, err
