@@ -12,7 +12,7 @@ func TestProductCounter(t *testing.T) {
 
 	db, dbName := newTmpDB(t)
 	defer db.Close()
-	defer dropDB(dbName)
+	defer dropDB(t, dbName)
 
 	prds := randomProducts(10)
 

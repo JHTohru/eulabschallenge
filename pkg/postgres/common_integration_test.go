@@ -52,21 +52,28 @@ func newTmpDB(t *testing.T) (*sql.DB, string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// run goose migrations on the new database
+	// run migrations files on the new database
 	ctx := context.Background()
-	migrationsDir := "../../migrations"
+	migrationsDir := "./infra/migrations"
 	if err := goose.UpContext(ctx, db, migrationsDir); err != nil {
 		t.Fatal(err)
 	}
 	return db, dbName
 }
 
-func dropDB(dbName string) error {
-	_, err := mainDB.Exec("DROP DATABASE " + dbName)
-	return err
+func dropDB(t *testing.T, dbName string) {
+	t.Helper()
+
+	query := fmt.Sprintf("DROP DATABASE %s WITH (FORCE)", dbName)
+	_, err := mainDB.Exec(query)
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
-func randomString(len int) string {
+// randomLetters builds a string of a len size containing random lowercase
+// ascii letters.
+func randomLetters(len int) string {
 	b := make([]byte, len)
 	for i := range len {
 		b[i] = byte('a' + rand.Intn(25))
@@ -74,6 +81,8 @@ func randomString(len int) string {
 	return string(b)
 }
 
+// randomTime generates a time not before than from, and at maximum max
+// duration after it.
 func randomTime(from time.Time, max time.Duration) time.Time {
 	n := rand.Int63n(int64(max))
 	return from.Add(time.Duration(n))
@@ -84,13 +93,15 @@ func randomProduct() *product.Product {
 	updatedAt := randomTime(createdAt, 24*time.Hour)
 	return &product.Product{
 		ID:          uuid.New(),
-		Name:        randomString(20),
-		Description: randomString(100),
+		Name:        randomLetters(20),
+		Description: randomLetters(100),
 		CreatedAt:   createdAt,
 		UpdatedAt:   updatedAt,
 	}
 }
 
+// randomProducts generate a list of random products of len size sorted by
+// their CreateAt field in an ascendent fashion.
 func randomProducts(len int) []*product.Product {
 	prds := make([]*product.Product, len)
 	for i := range len {
@@ -158,12 +169,12 @@ func assertProductsAreEqual(t *testing.T, got, want *product.Product) bool {
 		ok2 := got.Name == want.Name
 		ok3 := got.Description == want.Description
 
-		gotCreatedAt := got.CreatedAt.Truncate(time.Millisecond)
-		wantCreatedAt := want.CreatedAt.Truncate(time.Millisecond)
+		gotCreatedAt := got.CreatedAt.Round(time.Microsecond)
+		wantCreatedAt := want.CreatedAt.Round(time.Microsecond)
 		ok4 := gotCreatedAt.Equal(wantCreatedAt)
 
-		gotUpdatedAt := got.UpdatedAt.Truncate(time.Millisecond)
-		wantUpdatedAt := want.UpdatedAt.Truncate(time.Millisecond)
+		gotUpdatedAt := got.UpdatedAt.Round(time.Microsecond)
+		wantUpdatedAt := want.UpdatedAt.Round(time.Microsecond)
 		ok5 := gotUpdatedAt.Equal(wantUpdatedAt)
 
 		return ok1 && ok2 && ok3 && ok4 && ok5

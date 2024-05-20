@@ -11,8 +11,8 @@ import (
 func TestProductRemover(t *testing.T) {
 	t.Parallel()
 	db, dbName := newTmpDB(t)
+	defer dropDB(t, dbName)
 	defer db.Close()
-	defer dropDB(dbName)
 
 	id := uuid.New()
 	prd := randomProduct()

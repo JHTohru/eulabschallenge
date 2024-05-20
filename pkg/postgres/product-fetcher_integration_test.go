@@ -11,8 +11,8 @@ func TestProductFetcher(t *testing.T) {
 	t.Parallel()
 
 	db, dbName := newTmpDB(t)
+	defer dropDB(t, dbName)
 	defer db.Close()
-	defer dropDB(dbName)
 
 	prds := randomProducts(10)
 

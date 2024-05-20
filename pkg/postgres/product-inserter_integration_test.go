@@ -11,8 +11,8 @@ func TestProductInserter(t *testing.T) {
 	t.Parallel()
 
 	db, dbName := newTmpDB(t)
+	defer dropDB(t, dbName)
 	defer db.Close()
-	defer dropDB(dbName)
 
 	pi := NewProductInserter(db)
 	ctx := context.Background()

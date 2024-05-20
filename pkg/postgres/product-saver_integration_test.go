@@ -11,20 +11,20 @@ import (
 func TestProductSaver(t *testing.T) {
 	t.Parallel()
 	db, dbName := newTmpDB(t)
+	defer dropDB(t, dbName)
 	defer db.Close()
-	defer dropDB(dbName)
 
 	prd := randomProduct()
 
 	insertProducts(t, db, prd)
 
-	prd.Name = randomString(20)
-	prd.Description = randomString(100)
+	prd.Name = randomLetters(20)
+	prd.Description = randomLetters(100)
 	prd.UpdatedAt = time.Now()
 	ps := NewProductSaver(db)
 	ctx := context.Background()
 
-	err := ps.Update(ctx, prd)
+	err := ps.Save(ctx, prd)
 
 	assert.Nil(t, err)
 	assert.True(t, productExists(t, db, prd))
@@ -33,7 +33,7 @@ func TestProductSaver(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ps.Update(ctx, prd)
+	err = ps.Save(ctx, prd)
 
 	assertErrIsDatabaseIsClosed(t, err)
 }
